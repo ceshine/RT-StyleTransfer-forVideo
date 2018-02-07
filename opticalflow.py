@@ -17,7 +17,7 @@ def opticalflow(img1, img2):
     rgb = cv2.cvtColor(hsv,cv2.COLOR_HSV2RGB)
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
 
-    mask = np.where(x > 0.5, 1, 0)
+    mask = np.where(x > 0.5, 0, 1)
     gray[mask]
 
     return rgb, gray[mask]
