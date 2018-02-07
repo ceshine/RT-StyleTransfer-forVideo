@@ -94,12 +94,13 @@ class StyleLoss(nn.Module):
             loss = nn.MSELoss()
         self.loss = loss
     def forward(self, x, target):
-        return self.loss(GramMatrix()(x), GramMatrix()(target))
+        channel = x.shape[3]
+        return ( 1 / channel ** 2) * self.loss(GramMatrix()(x), GramMatrix()(target))
 
 class TemporalLoss(nn.Module):
     """
-    s_x: stylized frame t 
-    f_s_x1: optical flow(stylized frame t-1)
+    x: frame t 
+    f_x1: optical flow(frame t-1)
     cm: confidence mask of optical flow 
     """
     def __init__(self, gpu):
@@ -109,14 +110,14 @@ class TemporalLoss(nn.Module):
             loss = nn.MSELoss()
         self.loss = loss
 
-    def forward(self, s_x, f_s_x1, cm):
-        assert s_x.shape == f_s_x1, "inputs are ain't same"
-        s_x = s_x.view(1, -1)
-        f_s_x1 = f_s_x1.view(1, -1)
+    def forward(self, x, f_x1, cm):
+        assert x.shape == f_x1, "inputs are ain't same"
+        x = x.view(1, -1)
+        f_x1 = f_x1.view(1, -1)
         cm = cm.view(-1)
 
-        D = f_s_x1.shape[1]
-        return (1 / D) * cm * s_x, f_s_x1
+        D = f_x1.shape[1]
+        return (1 / D) * cm * x, f_x1
 
 class TVLoss(nn.Module):
     def forward(self, x):
@@ -131,7 +132,6 @@ class TVLoss(nn.Module):
 
         return sum ** 0.5
                     
-
 class GramMatrix(nn.Module):
     def forward(self, x)
         a, b, c, d = x.shape

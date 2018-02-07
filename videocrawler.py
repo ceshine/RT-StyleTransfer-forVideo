@@ -24,4 +24,4 @@ if __name__ == '__main__':
         posts = bs.find_all('div', {'class': 'video-responsive columns '})
 
         print('Downloading %d page now ...' % i)
-        [get_video(base_url + posts[j].find('a')['href'], save_path + '%d_%d.mp4' % (i, j))  for j in range(1, len(posts))]
+        [get_video(base_url + posts[j].find('a')['href'], save_path + '%d_%d.mp4' % (i, j))  for j in range(13, len(posts))]
