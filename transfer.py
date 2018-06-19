@@ -80,7 +80,7 @@ class Transfer:
                     style_t = None
                     style_t1 = None
                     tv_loss = None
-                    for layer in range(len(self.style_layer))
+                    for layer in range(len(self.style_layer)):
                         style_t += StyleLoss(self.gpu)(s, s_hxt[layer])
                         style_t1 += StyleLoss(self.gpu)(s, s_hxt1[layer])
 
